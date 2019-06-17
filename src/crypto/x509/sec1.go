@@ -57,12 +57,7 @@ func MarshalECPrivateKey(key interface{}) ([]byte, error) {
 		return nil, errors.New("x509: unknown elliptic curve")
 	}
 
-	return marshalECPrivateKeyWithOID(&curve, oid)
-}
-
-// marshalECPrivateKey marshals an EC private key into ASN.1, DER format and
-// sets the curve ID to the given OID, or omits it if OID is nil.
-func marshalECPrivateKeyWithOID(curve *elliptic.Curve, oid asn1.ObjectIdentifier) ([]byte, error) {
+	//privateKeyBytes := key.D.Bytes()
 	paddedPrivateKey := make([]byte, (curve.Params().N.BitLen()+7)/8)
 	copy(paddedPrivateKey[len(paddedPrivateKey)-len(privateKeyBytes):], privateKeyBytes)
 
@@ -70,7 +65,7 @@ func marshalECPrivateKeyWithOID(curve *elliptic.Curve, oid asn1.ObjectIdentifier
 		Version:       1,
 		PrivateKey:    paddedPrivateKey,
 		NamedCurveOID: oid,
-		PublicKey:     asn1.BitString{Bytes: elliptic.Marshal(curve, key.X, key.Y)},
+		PublicKey:     asn1.BitString{Bytes: elliptic.Marshal(curve, x, y)},
 	})
 }
 
