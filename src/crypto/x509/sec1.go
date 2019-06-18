@@ -116,6 +116,11 @@ func parseECPrivateKey(namedCurveOID *asn1.ObjectIdentifier, der []byte) (key in
 
 	switch curve {
 	case elliptic.P256Sm2():
+		k := new(big.Int).SetBytes(privKey.PrivateKey)
+		curveOrder := curve.Params().N
+		if k.Cmp(curveOrder) >= 0 {
+			return nil, errors.New("x509: invalid elliptic curve private key value")
+		}
 		priv := new(sm.PrivateKey)
 		priv.Curve = curve
 		priv.D = k
@@ -140,6 +145,11 @@ func parseECPrivateKey(namedCurveOID *asn1.ObjectIdentifier, der []byte) (key in
 		return priv, nil
 
 	case elliptic.P224(), elliptic.P256(), elliptic.P384(), elliptic.P521():
+		k := new(big.Int).SetBytes(privKey.PrivateKey)
+		curveOrder := curve.Params().N
+		if k.Cmp(curveOrder) >= 0 {
+			return nil, errors.New("x509: invalid elliptic curve private key value")
+		}
 		priv := new(ecdsa.PrivateKey)
 		priv.Curve = curve
 		priv.D = k
