@@ -30,8 +30,9 @@ type ecPrivateKey struct {
 }
 
 // ParseECPrivateKey parses an ASN.1 Elliptic Curve Private Key Structure.
-func ParseECPrivateKey(der []byte) (interface{}, error) {
-	return parseECPrivateKey(nil, der)
+func ParseECPrivateKey(der []byte) (*ecdsa.PrivateKey, error) {
+	key, err := parseECPrivateKey(nil, der)
+	return key.(*ecdsa.PrivateKey), err
 }
 
 // MarshalECPrivateKey marshals an EC private key into ASN.1, DER format.
