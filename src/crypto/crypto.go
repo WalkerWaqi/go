@@ -40,6 +40,7 @@ const (
 	BLAKE2b_256                 // import golang.org/x/crypto/blake2b
 	BLAKE2b_384                 // import golang.org/x/crypto/blake2b
 	BLAKE2b_512                 // import golang.org/x/crypto/blake2b
+	SM3                         // import crypto/sm
 	maxHash
 )
 
